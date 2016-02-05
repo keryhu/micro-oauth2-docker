@@ -1,0 +1,13 @@
+#自定义登录config-server的用户名，密码
+
+spring:
+  application:
+    name: pcgateway
+      
+  cloud:
+    config:
+      uri: http://user:password@localhost:8888
+      
+
+    
+    
