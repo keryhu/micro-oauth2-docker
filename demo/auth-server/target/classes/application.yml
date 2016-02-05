@@ -8,13 +8,7 @@ security:
   user:
     password: password
 
-#mongo 
-spring:
-  data:
-    mongodb:
-      uri: mongodb://test:123456@${MONGODB_HOST:localhost}:${MONGODB_PORT:27017}/test
-      repositories:
-        enabled: true
+
         
 logging:
   level:
@@ -24,12 +18,7 @@ logging:
       springframework:
          security: DEBUG
   
-  # custom jwt varietes 
-jwt:
-  clientId: kksdi2388wmkwe
-  clientSecret: kksd23is,dmsisdi2
-  scopes: openid
-  grantTypes: authorization_code, refresh_token,implicit,password
+
 
 
    
