@@ -1,76 +1,87 @@
 
-#Has methods  secure Config Server by oauth2 token ?
+#How to config SSO token-url in micro-spring-docker ?
 
-I plan to implement  spring cloud config-server by oauth2 token,so client-server can fetch property by :
+I met some problems with micro-spring-docker , i think maybe the sso token-url is not correct.
 
-	 cloud:
-	    config:
-	      uri: http://user:password@localhost:8888
- 
-Is it feasible ?
+The demo [https://github.com/keryhu/micro-oauth2-docker](github)
 
- but ... i met some problems .
-I start a demo in [https://github.com/keryhu/spring-oauth2-config-server.git](demo github link)
+In local computer , sso service and auth-service works fine .
 
-It contains  four services : 
+But not  in docker container . 
 
-**1 : eureka** : start first,and can implement service register and discovery,it has no oauth2 enviroment.
-
-**2 : auth-server** : JWT OAuth2 server configuration ,start secondly.
-
-		@SessionAttributes("authorizationRequest")
-		@EnableResourceServer
-		@EnableDiscoveryClient
-
- and inmemory user :
-
-	  security:
- 	    user:
- 	      password: password
-
-**3: config-server** : start thirdly
-
-	@EnableDiscoveryClient
-	@EnableConfigServer
-	@EnableResourceServer
-	
-and in application.yml :
-
-	spring:  
-	  cloud:
-	     config:
-	       server:
-	         git:
-	           uri: https://github.com/keryhu/cloud-config
-
+**SSO(pc-gateway service) application.yml:**
 
 	security:
+	  user:
+	    password: none
 	  oauth2:
-	    resource:
-	      jwt:
-	        keyValue: |
-	          -----BEGIN PUBLIC KEY-----
-	          ....
-	          -----END PUBLIC KEY-----
+	    client:
+	      accessTokenUri: http://${AUTHSERVER_PORT_9999_TCP_ADDR:localhost}:9999/uaa/oauth/token
+	      userAuthorizationUri: http://${AUTHSERVER_PORT_9999_TCP_ADDR:localhost}:9999/uaa/oauth/authorize
+	     
+
+	
+**docker-compose.yml**
+
+	eureka:
+	  image: eureka:0.0.1-SNAPSHOT
+	  container_name: eureka
+	  hostname: eureka
+	  ports:
+	   - "8761:8761"
+	   
+	configserver:
+	  image: config-server:0.0.1-SNAPSHOT
+	  container_name: configserver
+	  hostname: configserver
+	  links:
+	    - eureka
+	  ports:
+	    - "8888:8888"
+	    
+	authserver:
+	  image: auth-server:0.0.1-SNAPSHOT
+	  container_name: authserver
+	  hostname: authserver
+	  links:
+	    - eureka
+	    - configserver
+	  ports:
+	    - "9999:9999"
+
+	pcgateway:
+	  image: pc-gateway:0.0.1-SNAPSHOT
+	  container_name: pcgateway
+	  hostname: pcgateway
+	  links:
+	    - eureka
+	    - configserver
+	    - authserver
+	  ports:
+	    - "8080:8080"
 
 
 
-**4: pc-gateway** :  is a client-server,also  a ui server. start lastly
-
-When i test the secured uri: [http://localhost:8080/hello](), the page was redirected to "[http://localhost:9999/uua/login]()" . 
-
-   After  entering "**user:password**",it redirects back "[http://localhost:8080/hello]()" ,so i think the oauth-server and oauth-client is fine.
-
-but.. i also set the following configuration in bootstrap.yml
-
-	cloud:
-	    config:
-	      uri: http://user:password@localhost:8888
-
-When starting pc-gateway service, Fetching config from server has 401 Unauthorized errors :
-
-    INFO 954 --- [main] c.c.c.ConfigServicePropertySourceLocator : Fetching config from server at: http://localhost:8888
-    WARN 954 --- [main] c.c.c.ConfigServicePropertySourceLocator : Could not locate PropertySource: 401 Unauthorized
 
 
-Need help ! thanks !I
+After starting in docker container :	     
+	          
+http://192.168.99.100:8761/ showing :
+
+	Instances currently registered with Eureka
+	Application	  AMIs	   Availability Zones	Status
+	AUTHSERVER	 n/a(1)	          (1)          	UP (1) - authserver:authserver:9999
+	CONFIGSERVER n/a(1)	          (1)	        UP (1) - configserver:configserver:8888
+	PCGATEWAY	 n/a(1)	          (1)        	UP (1) - pcgateway:pcgateway:8080
+
+But when open the auth page: http://192.168.99.100:8080 
+	          
+It should be redirected to  auth-server login page , but it opened Timeout ， the Address Bar is: 
+
+	http://172.17.0.4:9999/uaa/oauth/authorize?client_id=clientapp&redirect_uri=http://192.168.99.100:8080/login&response_type=code&state=cdXhfg
+
+I don't know why , maybe the above sso tokenurl is not correct . How to resolve ?
+	          
+	         
+	          
+	    
