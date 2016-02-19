@@ -22,16 +22,12 @@ spring:
            basedir: target/config 
       
 
- 
-security:
-  oauth2:
-    resource:
-      jwt:
-        keyValue: |
-          -----BEGIN PUBLIC KEY-----
-          MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApVuOPKLwgnZxosn1zUH35nHq0bTxbcky8y9VgYg+1/XAWj6hPftDyUIXcH2vaRauoJxCf6QtpID3kcQCGVFvzkrQrNT1+2y+OjqKMmgZPe6EF6qd+1djqgfSzOSQuyIrFfhmMO84KMhyuL6wZnq0fqgqIZIXmzzyd5j12JL3jIHxsv8m5b7Crk+XuQToKCId1rTXB17t+ZmNjc6TXkmdcsCqiBRbKZ7N//VH33nNIxbFHF1uFEDrdLI2ziG/iGt9cS9dVvecgLgmPaE45ALgbv8WQycEMjCD/jopfhb2u+ybcOAEoH1pzjX4WHEVoGjVadyBE8hq9U4aH1x+Cji0kwIDAQAB
-          -----END PUBLIC KEY-----
-  
+eureka:
+  client:
+    registry-fetch-interval-seconds: 5
+    serviceUrl:
+       defaultZone: http://${EUREKA_PORT_8761_TCP_ADDR:localhost}:8761/eureka/ 
+
 
 
 

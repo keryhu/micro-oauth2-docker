@@ -12,8 +12,8 @@ security:
     password: none
   oauth2:
     client:
-      accessTokenUri: http://localhost:9999/uaa/oauth/token
-      userAuthorizationUri: http://localhost:9999/uaa/oauth/authorize
+      accessTokenUri: http://${AUTHSERVER_PORT_9999_TCP_ADDR:localhost}:9999/uaa/oauth/token
+      userAuthorizationUri: http://${AUTHSERVER_PORT_9999_TCP_ADDR:localhost}:9999/uaa/oauth/authorize
       clientId: clientapp
       clientSecret: 123456
     resource:
@@ -24,12 +24,9 @@ security:
           -----END PUBLIC KEY-----
 zuul:
   routes:
-    #resource:
-    #  path: /resource/**
-     # url: http://localhost:9000/resource
     user:
       path: /user/**
-      url: http://localhost:9999/uaa/user
+      url: http://${AUTHSERVER_PORT_9999_TCP_ADDR:localhost}:9999/uaa/user
   
 
 

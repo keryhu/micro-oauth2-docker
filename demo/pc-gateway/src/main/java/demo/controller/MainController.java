@@ -7,11 +7,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MainController {
 	
-	
+	@RequestMapping("/")
+    public String home() {
+        return "Hello ，this is pc-gateway's index page，!";
+    }
 
 	@RequestMapping("/hello")
-    public String home() {
-        return "Hello 这是pc-gateway 的hello 页面，欢迎光临!";
+    public String hello() {
+        return "Hello this is pc-gateway'hello page!";
     }
 	
 	

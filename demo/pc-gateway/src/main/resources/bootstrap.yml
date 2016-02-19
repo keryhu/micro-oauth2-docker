@@ -5,8 +5,9 @@ spring:
     name: pcgateway
       
   cloud:
-    config:
-      uri: http://user:password@localhost:8888
+     config:
+       uri: http://${CONFIGSERVER_PORT_8888_TCP_ADDR:localhost}:8888
+  
       
 
     
