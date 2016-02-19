@@ -1,5 +1,5 @@
 
-#How to config SSO token-url in micro-spring-docker ?
+#How to config spring cloud oauth2 in docker container ?
 
 I met some problems with micro-spring-docker , i think maybe the sso token-url is not correct.
 
