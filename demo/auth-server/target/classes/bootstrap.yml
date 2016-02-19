@@ -4,7 +4,7 @@ spring:
     name: authserver
   cloud:
      config:
-       uri: http://${CONFIGSERVER_PORT_8888_TCP_ADDR:localhost}:8888
+       uri: http://${domain.name:localhost}:8888
   
      
 
