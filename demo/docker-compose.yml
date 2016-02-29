@@ -3,7 +3,7 @@ services:
   eureka:
     image: eureka:0.0.1-SNAPSHOT
     restart: always
-    hostname: eureka
+    container_name: eureka
     ports:
       - "8761:8761"
     environment:
@@ -15,7 +15,7 @@ services:
   configserver:
     image: config-server:0.0.1-SNAPSHOT
     restart: always
-    hostname: configserver
+    container_name: configserver
     ports:
       - "8888:8888"
     environment:
@@ -28,7 +28,7 @@ services:
   authserver:
     image: auth-server:0.0.1-SNAPSHOT
     restart: always
-    hostname: authserver
+    container_name: authserver
     ports:
       - "9999:9999"
     environment:
@@ -40,7 +40,7 @@ services:
   
   pcgateway:
     image: pc-gateway:0.0.1-SNAPSHOT   
-    hostname: pcgateway
+    container_name: pcgateway
     domainname: 192.168.99.100
     ports:
       - "8080:8080"
@@ -52,6 +52,8 @@ services:
 networks:
   wfij:
     driver: bridge
+
+
 
 
   
