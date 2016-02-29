@@ -1,0 +1,60 @@
+version: '2'
+services:
+  eureka:
+    image: eureka:0.0.1-SNAPSHOT
+    restart: always
+    hostname: eureka
+    ports:
+      - "8761:8761"
+    environment:
+      DOMAIN_NAME: 192.168.99.100
+    networks:
+      - wfij
+    
+    
+  configserver:
+    image: config-server:0.0.1-SNAPSHOT
+    restart: always
+    hostname: configserver
+    ports:
+      - "8888:8888"
+    environment:
+      DOMAIN_NAME: 192.168.99.100
+    networks:
+      - wfij
+    
+  
+  
+  authserver:
+    image: auth-server:0.0.1-SNAPSHOT
+    restart: always
+    hostname: authserver
+    ports:
+      - "9999:9999"
+    environment:
+      DOMAIN_NAME: 192.168.99.100
+    networks:
+      - wfij
+
+
+  
+  pcgateway:
+    image: pc-gateway:0.0.1-SNAPSHOT   
+    hostname: pcgateway
+    domainname: 192.168.99.100
+    ports:
+      - "8080:8080"
+    environment:
+      DOMAIN_NAME: 192.168.99.100
+    networks:
+      - wfij
+      
+networks:
+  wfij:
+    driver: bridge
+
+
+  
+    
+
+
