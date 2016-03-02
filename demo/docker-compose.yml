@@ -22,9 +22,11 @@ services:
       DOMAIN_NAME: 192.168.1.110
     networks:
       - wfij
-    
-  
-  
+    depends_on:
+      - eureka
+
+
+
   authserver:
     image: auth-server:0.0.1-SNAPSHOT
     restart: always
@@ -35,9 +37,12 @@ services:
       DOMAIN_NAME: 192.168.1.110
     networks:
       - wfij
+    depends_on:
+      - eureka
+      - configserver
 
 
-  
+
   pcgateway:
     image: pc-gateway:0.0.1-SNAPSHOT   
     container_name: pcgateway
@@ -48,7 +53,11 @@ services:
       DOMAIN_NAME: 192.168.1.110
     networks:
       - wfij
-      
+    depends_on:
+      - eureka
+      - configserver
+      - authserver
+
 networks:
   wfij:
     external:
