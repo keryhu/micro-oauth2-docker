@@ -1,6 +1,7 @@
 FROM java:8
 MAINTAINER keryhu@hotmail.com
 VOLUME /tmp
+LABEL can-autoremove="true"
 RUN mkdir /app
 EXPOSE 8888
 ADD config-server-0.0.1-SNAPSHOT.jar /app/app.jar

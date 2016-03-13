@@ -1,6 +1,7 @@
 FROM java:8
 MAINTAINER keryhu@hotmail.com
 VOLUME /tmp
+LABEL can-autoremove="true"
 RUN mkdir /app
 EXPOSE 9999
 #因为需要copy文件并解压，所以用ADD 而不是copy
